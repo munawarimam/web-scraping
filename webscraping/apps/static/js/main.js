@@ -5,7 +5,4 @@ function validation(e) {
       e.preventDefault();
       alert("Please enter the product");
     }
-    else{
-      alert("")
-    }
   }
