@@ -1,0 +1,20 @@
+{% extends "users/base.html" %}
+{% block title %} Home Page {% endblock title%}
+{% block content %}
+    <div class="jumbotron">
+        <h1 class="display-4">Welcome, {{user.first_name.title|default:'Guest'}}</h1>
+        <p class="lead">
+            This is <b>web scraper system</b> build with django framework.
+            This system will scrape data products from <b>shopee</b> and <b>tokopedia</b> based on input user.
+        </p>
+        <hr class="my-4">
+        <p class="lead">
+            {% if user.is_authenticated %}
+                <a class="btn btn-primary btn-lg" href="{% url 'logout' %}" role="button">Logout</a>
+            {% else %}
+                <a class="btn btn-primary btn-lg" href="{% url 'login' %}" role="button">Sign in</a>
+            {% endif %}
+        </p>
+    </div>
+
+{% endblock content %}

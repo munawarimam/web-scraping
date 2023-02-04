@@ -1,0 +1,18 @@
+{% extends "users/base.html" %}
+{% block title %} Shopee Scrape {% endblock title%}
+{% load static %}
+{% block content %}
+
+<script src="{% static '/js/main.js' %}"></script>
+<div class="jumbotron">
+    <h1 class="display-4">Shopee</h1>
+        <hr class="my-4">
+        <form action = "#" autocomplete="off">
+            <div class="input-group">
+                <input class="form-control mr-sm-2" name="product"  id="product" type="text" placeholder="Enter the product">
+                <button class="btn btn-outline-primary  my-2 my-sm-0" onclick="validation(event)" type="submit">Scrape</button>
+            </div>
+        </form>
+</div>
+
+{% endblock content %}
