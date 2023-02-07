@@ -5,13 +5,13 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views import View
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 
 from .forms import RegisterForm, LoginForm, UpdateUserForm
-
+from .shopee import main as shopee_run
 
 def home(request):
     return render(request, 'users/home.html')
-
 
 class RegisterView(View):
     form_class = RegisterForm
@@ -90,17 +90,17 @@ def profile(request):
 
     return render(request, 'users/profile.html', {'user_form': user_form})
 
-
 @login_required
-def shopee_scrape(request):
-    text=''
+def shopee(request):
+    text = ''
     if request.method == 'POST':
-        text = request.POST['input_text']
+        text = request.POST['product']
+        url = f"/shopee/?product={text}"
+        return redirect(url)
     
+    return render(request, 'scrape/shopee.html', {'text': text})
 
-    return render(request, 'scrape/shopee.html', {'data': text})
 
 @login_required
-def tokopedia_scrape(request):
-
+def tokopedia(request):
     return render(request, 'scrape/tokopedia.html')

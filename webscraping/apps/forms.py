@@ -75,3 +75,6 @@ class UpdateUserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'email']
+
+class ProductForm(forms.Form):
+    product = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control mr-sm-2", 'placeholder': "Enter the product",  'type': "text"}))

@@ -11,10 +11,17 @@
     <link rel="stylesheet" type ="text/css" href="{% static '/css/main.css' %}" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
+    <script src="{% static '/js/main.js' %}"></script>
+    <link rel="stylesheet" href="{% static '/css/style.css' %}"/>
+    
     <!--Font awesome icons -->
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+	  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
  
-    <title>{% block title %} {% endblock %} </title>
+    <!-- Dropzone -->
+    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+    
+<title>{% block title %} {% endblock %} </title>
 </head>
 <body>
   <div class="container p-3 my-3">
@@ -24,8 +31,8 @@
           <a href="/" class="navbar-brand">Home</a>
           {% if user.is_authenticated %}
           <ul class="navbar-nav mr-auto">
-              <a href="{% url 'shopee-scrape' %}" class="nav-link">Shopee</a>
-              <a href="{% url 'tokopedia-scrape' %}" class="nav-link">Tokopedia</a>
+              <a href="{% url 'shopee' %}" class="nav-link">Shopee</a>
+              <a href="{% url 'tokopedia' %}" class="nav-link">Tokopedia</a>
           </ul>
           {% endif %}
             <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">

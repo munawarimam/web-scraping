@@ -64,7 +64,7 @@ def get_item_url(user_input):
 
 def get_values(urls):
     list_data = []
-    for url in urls:
+    for url in urls[0:2]:
         print(url)
         driver = webdriver.Chrome(service=s)
         driver.get(url)
@@ -93,4 +93,4 @@ def main(user_input):
     all_values = get_values(urls)
     clean_values = [{key.strip('\n').lower().replace(" ", "_"): re.sub('[^a-zA-Z0-9 \n\.\,\-]', '', re.sub(' +', ' ', item.replace('\n', ' '))) for key, item in my_dict.items()} for my_dict in all_values]
     df = pd.DataFrame(clean_values)
-    df.to_excel(r'C:\Users\USER\Desktop\shopee.xlsx', index=False)
+    df.to_excel(r'C:\Users\USER\Desktop\shopee2.xlsx', index=False)

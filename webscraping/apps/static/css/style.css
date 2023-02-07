@@ -1,0 +1,19 @@
+.box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body {
+    background-color: #f8f8f8;
+}
+
+.dz {
+    border: dashed !important;
+    border-color: #33C3F0 !important;
+    border-radius: 10px !important;
+}
+
+.dz:hover{
+    background-color: aliceblue !important;
+}
