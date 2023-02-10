@@ -92,13 +92,12 @@ def profile(request):
 
 @login_required
 def shopee(request):
-    text = ''
-    if request.method == 'POST':
+    if 'product' in request.POST:
         text = request.POST['product']
-        url = f"/shopee/?product={text}"
-        return redirect(url)
-    
-    return render(request, 'scrape/shopee.html', {'text': text})
+        df = shopee_run(text)
+        return render(request, 'scrape/shopee.html', {'df': df})
+        
+    return render(request, 'scrape/shopee.html')
 
 
 @login_required

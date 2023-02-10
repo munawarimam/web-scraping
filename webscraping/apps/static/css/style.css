@@ -17,3 +17,17 @@ body {
 .dz:hover{
     background-color: aliceblue !important;
 }
+
+.MainDiv {
+    overflow: auto;
+    border: 1px solid red;
+}
+
+.search-table-outter {border:2px}
+.search-table{table-layout: fixed; margin:40px auto 0px auto; }
+.search-table, td, th{border-collapse:collapse;}
+th{padding:20px 7px; font-size:15px;}
+td{padding:5px 10px; height:35px;}
+
+.search-table-outter { overflow-x: scroll; }
+th, td { min-width: 200px; }

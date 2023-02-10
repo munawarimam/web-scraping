@@ -93,4 +93,5 @@ def main(user_input):
     all_values = get_values(urls)
     clean_values = [{key.strip('\n').lower().replace(" ", "_"): re.sub('[^a-zA-Z0-9 \n\.\,\-]', '', re.sub(' +', ' ', item.replace('\n', ' '))) for key, item in my_dict.items()} for my_dict in all_values]
     df = pd.DataFrame(clean_values)
-    df.to_excel(r'C:\Users\USER\Desktop\shopee2.xlsx', index=False)
+    df = df.fillna('-')
+    return df
