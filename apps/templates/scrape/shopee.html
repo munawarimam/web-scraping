@@ -5,11 +5,15 @@
 <div class="jumbotron">
     <h1 class="display-4">Shopee</h1>
         <hr class="my-4">
-        <form method="POST" autocomplete="off">
+        <form id="formproduct" method="POST" autocomplete="off">
             <div class="input-group">
                 {% csrf_token %}
                 <input class="form-control mr-sm-2" name="product"  id="product" type="text" placeholder="Enter the product" value="{{text}}">
-                <button class="btn btn-outline-primary  my-2 my-sm-0" onclick="validation(event)" type="submit">Scrape</button>
+                <div class="input-group-btn">
+                    <button class="btn btn-outline-primary  my-2 my-sm-0" id="searchproduct" onclick="validation(event)" type="submit"> Scrape
+                        <i class="glyphicon glyphicon-search"></i>
+                    </button>
+                </div>
             </div>
         </form>
 </div>
@@ -31,7 +35,7 @@
         {% for index, row in df.iterrows %}
             <tr>
             {% for cell in row %}
-                <td>
+                <td class="ellipsis">
                 {{cell}}
                 </td>
             {% endfor %}
@@ -41,7 +45,6 @@
     </table>
 </div>
 {% endif%} 
-{% endblock content %}
 
 <!-- <div class="search-table-outter wrapper">
     <table id="example" class="table table-striped" style="width:100%">
@@ -194,3 +197,4 @@
             </tr>
     </table>
 </div> -->
+{% endblock content %}

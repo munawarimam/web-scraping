@@ -9,6 +9,7 @@ from django.http import HttpResponse
 
 from .forms import RegisterForm, LoginForm, UpdateUserForm
 from .shopee import main as shopee_run
+from .tokopedia import main as tokopedia_run
 
 def home(request):
     return render(request, 'users/home.html')
@@ -92,14 +93,19 @@ def profile(request):
 
 @login_required
 def shopee(request):
-    if 'product' in request.POST:
+    if request.method == 'POST':
         text = request.POST['product']
         df = shopee_run(text)
-        return render(request, 'scrape/shopee.html', {'df': df})
+        return render(request, 'scrape/shopee.html', {'df': df, 'text': text, 'pid': pid})
         
     return render(request, 'scrape/shopee.html')
 
 
 @login_required
 def tokopedia(request):
+    if request.method == 'POST':
+        text = request.POST['product']
+        df = tokopedia_run(text)
+        return render(request, 'scrape/tokopedia.html', {'df': df, 'text': text})
+        
     return render(request, 'scrape/tokopedia.html')

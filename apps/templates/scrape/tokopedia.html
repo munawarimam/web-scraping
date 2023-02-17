@@ -5,12 +5,45 @@
 <div class="jumbotron">
     <h1 class="display-4">Tokopedia</h1>
         <hr class="my-4">
-        <form action = "#" autocomplete="off">
+        <form id="formproduct" method="POST" autocomplete="off">
             <div class="input-group">
-                <input class="form-control mr-sm-2" name="product"  type="text" placeholder="Enter the product">
-                <button class="btn btn-outline-primary  my-2 my-sm-0" type="submit">Scrape</button>
+                {% csrf_token %}
+                <input class="form-control mr-sm-2" name="product"  id="product" type="text" placeholder="Enter the product" value="{{text}}">
+                <div class="input-group-btn">
+                    <button class="btn btn-outline-primary  my-2 my-sm-0" id="searchproduct" onclick="validation(event)" type="submit"> Scrape
+                        <i class="glyphicon glyphicon-search"></i>
+                    </button>
+                </div>
             </div>
         </form>
 </div>
 
+{% if df is not None %}
+<div class="search-table-outter wrapper">
+    <table id="example" class="table table-striped" style="width:100%">
+        <thead>
+            <tr>
+            {% for col in df.columns %}
+                <th>
+                {{col}}
+                </th>
+            {% endfor %}
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for index, row in df.iterrows %}
+            <tr>
+            {% for cell in row %}
+                <td class="ellipsis">
+                {{cell}}
+                </td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endif%} 
 {% endblock content %}
