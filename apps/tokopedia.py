@@ -1,15 +1,11 @@
 import re
-from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service
 import pandas as pd
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 
 BASE_URL = 'https://www.tokopedia.com'
-
-s=Service(r"D:\webdriver\chromedriver.exe")
 
 class AnyEc:
     """ Use with WebDriverWait to combine expected_conditions
@@ -23,7 +19,6 @@ class AnyEc:
                 res = fn(driver)
                 if res:
                     return True
-                    # Or return res if you need the element found
             except:
                 pass
 
@@ -39,10 +34,9 @@ def scrolling_page(driver):
         time.sleep(SCROLL_PAUSE_TIME)
         current_position = driver.execute_script('return window.pageYOffset')
 
-def get_item_url(user_input):
+def get_item_url(user_input, driver):
     base_url = BASE_URL + '/search?condition=1&navsource=&srp_page_id=&srp_page_title=&st=product&q=' + user_input.replace(" ", "%20")
     list_url = []
-    driver = webdriver.Chrome(service=s)
     driver.maximize_window()
     driver.get(base_url)
     scrolling_page(driver)
@@ -54,13 +48,12 @@ def get_item_url(user_input):
         for item in items:
             url = item.get_attribute('href')
             list_url.append(url)
-        driver.quit()
+
     return list_url
 
-def get_values(url):
+def get_values(url, driver):
     list_data = []
     for i in url:
-        driver = webdriver.Chrome(service=s)
         driver.get(i)
         try:
             WebDriverWait(driver, 30).until(AnyEc (
@@ -74,15 +67,13 @@ def get_values(url):
             all_value = {'product': product_name, 'harga': price, 'deskripsi': desc_product}
             list_data.append(all_value)
             time.sleep(3)
-        driver.quit()
         
     return list_data
 
-
-def main(user_input):
-    urls = get_item_url(user_input)
+def main(user_input, driver):
+    urls = get_item_url(user_input, driver)
     new_urls = [ x for x in urls if "ta.tokopedia" not in x ]
-    all_values = get_values(new_urls)
+    all_values = get_values(new_urls, driver)
     clean_values = [{key.strip('\n').lower().replace(" ", "_"): re.sub('[^a-zA-Z0-9 \n\.\,\-]', ' ', re.sub(' +', ' ', item.replace('\n', ' '))) for key, item in my_dict.items()} for my_dict in all_values]
     df = pd.DataFrame(clean_values)
     return df

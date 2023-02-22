@@ -6,7 +6,3 @@ function validation(e) {
       alert("Please enter the product");
     }
 }
-
-function cancel(){
-  returnToPreviousPage();
-}

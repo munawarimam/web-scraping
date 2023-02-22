@@ -8,9 +8,9 @@
         <form id="formproduct" method="POST" autocomplete="off">
             <div class="input-group">
                 {% csrf_token %}
-                <input class="form-control mr-sm-2" name="product"  id="product" type="text" placeholder="Enter the product" value="{{text}}">
+                <input class="form-control mr-sm-2" name="product" id="product" type="text" placeholder="Enter the product" value="{{text}}">
                 <div class="input-group-btn">
-                    <button class="btn btn-outline-primary  my-2 my-sm-0" id="searchproduct" onclick="validation(event)" type="submit"> Scrape
+                    <button class="btn btn-outline-primary  my-2 my-sm-0" id="SearchProductTokopedia" onclick="validation(event)" type="submit"> Scrape
                         <i class="glyphicon glyphicon-search"></i>
                     </button>
                 </div>

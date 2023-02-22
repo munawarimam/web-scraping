@@ -5,11 +5,21 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views import View
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.conf import settings
 
 from .forms import RegisterForm, LoginForm, UpdateUserForm
 from .shopee import main as shopee_run
 from .tokopedia import main as tokopedia_run
+import signal
+import os, time
+from django.http import HttpResponseBadRequest
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+
+DRIVER_SHOPEE = None
+DRIVER_TOKOPEDIA = None
+
+s = Service(getattr(settings, "CHROME_DRIVER", None))
 
 def home(request):
     return render(request, 'users/home.html')
@@ -67,16 +77,6 @@ class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
     success_message = "Successfully Changed Your Password"
     success_url = reverse_lazy('users-home')
 
-class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
-    template_name = 'users/password_reset.html'
-    email_template_name = 'users/password_reset_email.html'
-    subject_template_name = 'users/password_reset_subject.txt'
-    success_message = "We've emailed you instructions for setting your password, " \
-                      "if an account exists with the email you entered. You should receive them shortly." \
-                      " If you don't receive an email, " \
-                      "please make sure you've entered the address you registered with, and check your spam folder."
-    success_url = reverse_lazy('users-home')
-
 @login_required
 def profile(request):
     if request.method == 'POST':
@@ -92,20 +92,49 @@ def profile(request):
     return render(request, 'users/profile.html', {'user_form': user_form})
 
 @login_required
-def shopee(request):
+def Shopee(request):
+    global DRIVER_SHOPEE
     if request.method == 'POST':
+        DRIVER_SHOPEE = webdriver.Chrome(service=s)
         text = request.POST['product']
-        df = shopee_run(text)
-        return render(request, 'scrape/shopee.html', {'df': df, 'text': text, 'pid': pid})
-        
+        try:
+            df = shopee_run(text, DRIVER_SHOPEE)
+            return render(request, 'scrape/shopee.html', {'df': df, 'text': text})
+        except:
+            return render(request, 'scrape/shopee.html', {'text': text})
+        finally:
+            DRIVER_SHOPEE.close()
+
     return render(request, 'scrape/shopee.html')
 
-
 @login_required
-def tokopedia(request):
+def Tokopedia(request):
+    global DRIVER_TOKOPEDIA
     if request.method == 'POST':
+        DRIVER_TOKOPEDIA = webdriver.Chrome(service=s)
         text = request.POST['product']
-        df = tokopedia_run(text)
-        return render(request, 'scrape/tokopedia.html', {'df': df, 'text': text})
+        try:
+            df = tokopedia_run(text, DRIVER_TOKOPEDIA)
+            return render(request, 'scrape/tokopedia.html', {'df': df, 'text': text})
+        except:
+            return render(request, 'scrape/tokopedia.html', {'text': text})
+        finally:
+            DRIVER_TOKOPEDIA.close()
         
     return render(request, 'scrape/tokopedia.html')
+
+def CancelScrapeShopee(request):
+    try:
+        time.sleep(5)
+        DRIVER_SHOPEE.close()
+    except:
+        return HttpResponseBadRequest('Bad Request')
+    return redirect(request.META.get('HTTP_REFERER'))
+
+def CancelScrapeTokopedia(request):
+    try:
+        time.sleep(5)
+        DRIVER_TOKOPEDIA.close()
+    except:
+        return HttpResponseBadRequest('Bad Request')
+    return redirect(request.META.get('HTTP_REFERER'))

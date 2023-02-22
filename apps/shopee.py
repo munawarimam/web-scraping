@@ -1,19 +1,10 @@
 import pandas as pd
-from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import pandas as pd
-import time
-import re
-import os
-import signal
-
+import time, re
 
 BASE_URL = 'https://shopee.co.id'
-
-s=Service(r"D:\webdriver\chromedriver.exe")
 
 class AnyEc:
     """ Use with WebDriverWait to combine expected_conditions
@@ -27,7 +18,6 @@ class AnyEc:
                 res = fn(driver)
                 if res:
                     return True
-                    # Or return res if you need the element found
             except:
                 pass
 
@@ -44,10 +34,9 @@ def scrolling_page(driver):
         time.sleep(SCROLL_PAUSE_TIME)
         current_position = driver.execute_script('return window.pageYOffset')
 
-def get_item_url(user_input):
+def get_item_url(user_input, driver):
     base_url = BASE_URL + '/search?keyword=' + user_input.replace(" ", "%20")
     list_url = []
-    driver = webdriver.Chrome(service=s)
     driver.maximize_window()
     driver.get(base_url)
     scrolling_page(driver)
@@ -60,15 +49,12 @@ def get_item_url(user_input):
         for item in items:
             url = item.get_attribute('href')
             list_url.append(url)
-        driver.quit()
         
     return list_url
 
-def get_values(urls):
+def get_values(urls, driver):
     list_data = []
     for url in urls:
-        print(url)
-        driver = webdriver.Chrome(service=s)
         driver.get(url)
         try:
             WebDriverWait(driver, 30).until(AnyEc (
@@ -86,13 +72,12 @@ def get_values(urls):
                 all_value.update({spec.find_element(By.TAG_NAME, 'label').text: spec.find_element(By.XPATH, "div|a").text})
             list_data.append(all_value)
             time.sleep(3)
-        driver.quit()
 
     return list_data
 
-def main(user_input):
-    urls = get_item_url(user_input)
-    all_values = get_values(urls)
+def main(user_input, driver):
+    urls = get_item_url(user_input, driver)
+    all_values = get_values(urls, driver)
     clean_values = [{key.strip('\n').lower().replace(" ", "_"): re.sub('[^a-zA-Z0-9 \n\.\,\-]', '', re.sub(' +', ' ', item.replace('\n', ' '))) for key, item in my_dict.items()} for my_dict in all_values]
     df = pd.DataFrame(clean_values)
     df = df.fillna('-')
