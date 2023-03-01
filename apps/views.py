@@ -1,25 +1,41 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordResetView
+from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views import View
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseBadRequest
 from django.conf import settings
 
 from .forms import RegisterForm, LoginForm, UpdateUserForm
 from .shopee import main as shopee_run
 from .tokopedia import main as tokopedia_run
-import signal
-import os, time
-from django.http import HttpResponseBadRequest
-from selenium import webdriver
+import time
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
+from selenium import webdriver
 
 DRIVER_SHOPEE = None
 DRIVER_TOKOPEDIA = None
+DRIVER_PATH = Service(getattr(settings, "CHROME_DRIVER", None))
 
-s = Service(getattr(settings, "CHROME_DRIVER", None))
+options_shopee = Options()
+options_shopee.add_argument('--headless')
+options_shopee.add_argument('--no-sandbox')
+options_shopee.add_argument('--disable-dev-shm-usage')
+options_shopee.add_argument('--disable-gpu')
+options_shopee.add_argument("window-size=6000,6000")
+options_shopee.add_experimental_option('excludeSwitches', ['enable-logging'])
+
+options_tokopedia = Options()
+options_tokopedia.add_argument('--headless')
+options_tokopedia.add_argument('--no-sandbox')
+options_tokopedia.add_argument('--disable-dev-shm-usage')
+options_tokopedia.add_argument('--disable-gpu')
+options_tokopedia.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36')
+options_tokopedia.add_argument("window-size=1920,1080")
+options_tokopedia.add_experimental_option('excludeSwitches', ['enable-logging'])
 
 def home(request):
     return render(request, 'users/home.html')
@@ -95,13 +111,13 @@ def profile(request):
 def Shopee(request):
     global DRIVER_SHOPEE
     if request.method == 'POST':
-        DRIVER_SHOPEE = webdriver.Chrome(service=s)
+        DRIVER_SHOPEE = webdriver.Chrome(service=DRIVER_PATH, chrome_options=options_shopee)
         text = request.POST['product']
         try:
             df = shopee_run(text, DRIVER_SHOPEE)
             return render(request, 'scrape/shopee.html', {'df': df, 'text': text})
         except:
-            return render(request, 'scrape/shopee.html', {'text': text})
+            return HttpResponseBadRequest('Runtime Error')
         finally:
             DRIVER_SHOPEE.close()
 
@@ -111,13 +127,13 @@ def Shopee(request):
 def Tokopedia(request):
     global DRIVER_TOKOPEDIA
     if request.method == 'POST':
-        DRIVER_TOKOPEDIA = webdriver.Chrome(service=s)
+        DRIVER_TOKOPEDIA = webdriver.Chrome(service=DRIVER_PATH, chrome_options=options_tokopedia)
         text = request.POST['product']
         try:
             df = tokopedia_run(text, DRIVER_TOKOPEDIA)
             return render(request, 'scrape/tokopedia.html', {'df': df, 'text': text})
         except:
-            return render(request, 'scrape/tokopedia.html', {'text': text})
+            return HttpResponseBadRequest('Runtime Error')
         finally:
             DRIVER_TOKOPEDIA.close()
         
@@ -125,7 +141,7 @@ def Tokopedia(request):
 
 def CancelScrapeShopee(request):
     try:
-        time.sleep(5)
+        time.sleep(7)
         DRIVER_SHOPEE.close()
     except:
         return HttpResponseBadRequest('Bad Request')
@@ -133,7 +149,7 @@ def CancelScrapeShopee(request):
 
 def CancelScrapeTokopedia(request):
     try:
-        time.sleep(5)
+        time.sleep(7)
         DRIVER_TOKOPEDIA.close()
     except:
         return HttpResponseBadRequest('Bad Request')

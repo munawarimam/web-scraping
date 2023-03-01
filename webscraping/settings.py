@@ -24,11 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-1z=(%%@k*wjaso1mlmm(%&efbii=7@9ku+xud9_#xap%n34)k_"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = bool(int(os.environ.get('DEBUG', 0)))
 
-ALLOWED_HOSTS = []
-
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -131,6 +129,4 @@ SESSION_COOKIE_AGE = 60 * 60 * 24 * 30
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = 'login'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
-CHROME_DRIVER = r'D:\webdriver\chromedriver.exe'
+CHROME_DRIVER = '/usr/local/bin/chromedriver'

@@ -24,6 +24,7 @@ class AnyEc:
 
 def scrolling_page(driver):
     SCROLL_PAUSE_TIME = 5
+
     # Get scroll height
     total_height = driver.execute_script("return document.body.scrollHeight")
     browser_window_height = driver.get_window_size(windowHandle='current')['height']
@@ -37,9 +38,9 @@ def scrolling_page(driver):
 def get_item_url(user_input, driver):
     base_url = BASE_URL + '/search?condition=1&navsource=&srp_page_id=&srp_page_title=&st=product&q=' + user_input.replace(" ", "%20")
     list_url = []
-    driver.maximize_window()
     driver.get(base_url)
     scrolling_page(driver)
+
     try:
         WebDriverWait(driver, 30).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, 'div.css-974ipl>a')))
@@ -51,10 +52,10 @@ def get_item_url(user_input, driver):
 
     return list_url
 
-def get_values(url, driver):
+def get_values(urls, driver):
     list_data = []
-    for i in url:
-        driver.get(i)
+    for url in urls:
+        driver.get(url)
         try:
             WebDriverWait(driver, 30).until(AnyEc (
                 EC.presence_of_element_located((By.CLASS_NAME,'css-1os9jjn')),

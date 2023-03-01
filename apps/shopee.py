@@ -37,12 +37,11 @@ def scrolling_page(driver):
 def get_item_url(user_input, driver):
     base_url = BASE_URL + '/search?keyword=' + user_input.replace(" ", "%20")
     list_url = []
-    driver.maximize_window()
     driver.get(base_url)
     scrolling_page(driver)
         
     try:
-        WebDriverWait(driver, 20).until(
+        WebDriverWait(driver, 30).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, 'div.col-xs-2-4.shopee-search-item-result__item>a')))
     finally:
         items = driver.find_elements(By.CSS_SELECTOR, 'div.col-xs-2-4.shopee-search-item-result__item>a')
