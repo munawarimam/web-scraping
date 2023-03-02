@@ -26,7 +26,7 @@ ALLOWED_HOSTS = ['*']
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
-# CSRF_TRUSTED_ORIGINS = ['https://imam-underground-scraper.fly.dev']
+CSRF_TRUSTED_ORIGINS = ['http://18.141.58.227']
 
 # Application definition
 
