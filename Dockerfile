@@ -1,8 +1,20 @@
-FROM python:3.8-slim-buster
+ARG PYTHON_VERSION=3.10-slim-buster
+
+FROM python:${PYTHON_VERSION}
+
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+RUN mkdir -p /web-scraping
 
 WORKDIR /web-scraping
 
-COPY . .
+COPY requirements.txt /tmp/requirements.txt
+
+RUN set -ex && \
+    pip install --upgrade pip && \
+    pip install -r /tmp/requirements.txt && \
+    rm -rf /root/.cache/
 
 RUN apt-get update -y && apt-get install -y curl zip unzip nano wget gnupg
 
@@ -19,7 +31,9 @@ RUN CHROMEDRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RE
     rm /tmp/chromedriver_linux64.zip && \
     chmod 777 /opt/chromedriver-$CHROMEDRIVER_VERSION/chromedriver && \
     ln -fs /opt/chromedriver-$CHROMEDRIVER_VERSION/chromedriver /usr/local/bin/chromedriver
+    
+COPY . /web-scraping/
 
-RUN pip install -r requirements.txt
+COPY ./entrypoint.sh /
 
-CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+ENTRYPOINT ["sh", "/entrypoint.sh"]

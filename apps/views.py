@@ -37,6 +37,9 @@ options_tokopedia.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; 
 options_tokopedia.add_argument("window-size=1920,1080")
 options_tokopedia.add_experimental_option('excludeSwitches', ['enable-logging'])
 
+def handler_404(request, exception):
+    return render(request, 'users/404.html')
+
 def home(request):
     return render(request, 'users/home.html')
 
