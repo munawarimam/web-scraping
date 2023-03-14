@@ -119,8 +119,8 @@ def Shopee(request):
         try:
             df = shopee_run(text, DRIVER_SHOPEE)
             return render(request, 'scrape/shopee.html', {'df': df, 'text': text})
-        except:
-            return HttpResponseBadRequest('Runtime Error')
+        # except:
+        #     return HttpResponseBadRequest('Runtime Error')
         finally:
             DRIVER_SHOPEE.close()
 
@@ -135,8 +135,8 @@ def Tokopedia(request):
         try:
             df = tokopedia_run(text, DRIVER_TOKOPEDIA)
             return render(request, 'scrape/tokopedia.html', {'df': df, 'text': text})
-        except:
-            return HttpResponseBadRequest('Runtime Error')
+        # except:
+        #     return HttpResponseBadRequest('Runtime Error')
         finally:
             DRIVER_TOKOPEDIA.close()
         
