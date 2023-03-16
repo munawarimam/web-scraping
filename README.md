@@ -12,8 +12,7 @@ NB : Make sure you have changed your local CHROME_DRIVER path on webscraping/set
 ### Dockerize
 
 ```
-$ docker build --tag web-scraping . 
-$ docker run -d --publish 8000:8000 web-scraping
+$ docker-compose build --no-cache && docker-compose up -d
 ```
 
 ### Setup docker on instance

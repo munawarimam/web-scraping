@@ -26,7 +26,6 @@ options_shopee.add_argument('--no-sandbox')
 options_shopee.add_argument('--disable-dev-shm-usage')
 options_shopee.add_argument('--disable-gpu')
 options_shopee.add_argument("window-size=6000,6000")
-options_shopee.add_experimental_option('excludeSwitches', ['enable-logging'])
 
 options_tokopedia = Options()
 options_tokopedia.add_argument('--headless')
@@ -35,7 +34,6 @@ options_tokopedia.add_argument('--disable-dev-shm-usage')
 options_tokopedia.add_argument('--disable-gpu')
 options_tokopedia.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36')
 options_tokopedia.add_argument("window-size=1920,1080")
-options_tokopedia.add_experimental_option('excludeSwitches', ['enable-logging'])
 
 def handler_404(request, exception):
     return render(request, 'users/404.html')
@@ -119,8 +117,8 @@ def Shopee(request):
         try:
             df = shopee_run(text, DRIVER_SHOPEE)
             return render(request, 'scrape/shopee.html', {'df': df, 'text': text})
-        # except:
-        #     return HttpResponseBadRequest('Runtime Error')
+        except:
+            return HttpResponseBadRequest('Runtime Error')
         finally:
             DRIVER_SHOPEE.close()
 
@@ -135,8 +133,8 @@ def Tokopedia(request):
         try:
             df = tokopedia_run(text, DRIVER_TOKOPEDIA)
             return render(request, 'scrape/tokopedia.html', {'df': df, 'text': text})
-        # except:
-        #     return HttpResponseBadRequest('Runtime Error')
+        except:
+            return HttpResponseBadRequest('Runtime Error')
         finally:
             DRIVER_TOKOPEDIA.close()
         
@@ -144,16 +142,16 @@ def Tokopedia(request):
 
 def CancelScrapeShopee(request):
     try:
-        time.sleep(7)
+        time.sleep(5)
         DRIVER_SHOPEE.close()
     except:
-        return HttpResponseBadRequest('Bad Request')
+        return redirect(request.META.get('HTTP_REFERER'))
     return redirect(request.META.get('HTTP_REFERER'))
 
 def CancelScrapeTokopedia(request):
     try:
-        time.sleep(7)
+        time.sleep(5)
         DRIVER_TOKOPEDIA.close()
     except:
-        return HttpResponseBadRequest('Bad Request')
+        return redirect(request.META.get('HTTP_REFERER'))
     return redirect(request.META.get('HTTP_REFERER'))

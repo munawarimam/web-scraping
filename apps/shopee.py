@@ -70,7 +70,6 @@ def get_values(urls, driver):
             for spec in specs:
                 all_value.update({spec.find_element(By.TAG_NAME, 'label').text: spec.find_element(By.XPATH, "div|a").text})
             list_data.append(all_value)
-            time.sleep(3)
 
     return list_data
 
