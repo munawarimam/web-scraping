@@ -6,7 +6,7 @@ services:
       - .:/web-scraping
       - static:/web-scraping/static
     env_file:
-      - .env
+      - ./.env
     build:
       context: .
     ports:

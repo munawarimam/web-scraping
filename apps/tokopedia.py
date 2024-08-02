@@ -67,7 +67,7 @@ def get_values(urls, driver):
             desc_product = driver.find_element(By.CLASS_NAME, 'eytdjj01').text
             all_value = {'product': product_name, 'harga': price, 'deskripsi': desc_product}
             list_data.append(all_value)
-        
+
     return list_data
 
 def main(user_input, driver):

@@ -12,7 +12,7 @@ NB : Make sure you have changed your local CHROME_DRIVER path on webscraping/set
 ### Dockerize
 
 ```
-$ docker-compose build --no-cache && docker-compose up -d
+$ docker-compose up --build --force-recreate -d
 ```
 
 ### Setup docker on instance
