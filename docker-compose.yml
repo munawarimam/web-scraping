@@ -2,20 +2,19 @@ version: '3.9'
 
 services:
   web-scraping:
+    container_name: web-scraping
     volumes:
       - .:/web-scraping
-      - static:/web-scraping/static
     env_file:
-      - ./.env
+      - .env
     build:
       context: .
     ports:
       - "8000:8000"
 
   nginx:
+    container_name: nginx
     build: ./nginx
-    volumes:
-      - static:/web-scraping/static
     ports:
       - "80:80"
     depends_on:

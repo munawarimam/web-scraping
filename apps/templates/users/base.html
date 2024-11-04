@@ -2,7 +2,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <link rel="shortcut icon" type="image/x-icon" href="{% static '/img/xapiens-logo.png' %}" />
+    <link rel="shortcut icon" type="image/x-icon" href="{% static '/img/favicon.ico' %}" />
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -66,19 +66,39 @@
     </div>
   </div>
 
-  <div id="CoverScreenShopee" class="LockOn" style="display:none"> 
+  <!-- <div id="CoverScreenShopee" class="LockOn" style="display:none"> 
     <div class="container p-5 my-5">
         <button class="btn btn-outline-secondary" id="cancel-shopee" type="reset" onclick="location.href='{% url 'cancel-scrape-shopee' %}'">Cancel</button><br><br>
         <small id="cancel-text-shopee" style="text-align: center; display:none">Cancel the process.. Please wait..</small>
+    </div>
+  </div> -->
+  <div id="CoverScreenShopee" class="LockOn" style="display:none"> 
+    <div class="container p-5 my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-4 text-center">
+                <button class="btn btn-outline-secondary btn-block" id="cancel-shopee" type="reset" onclick="location.href='{% url 'cancel-scrape-shopee' %}'">Cancel</button><br>
+                <small id="cancel-text-shopee" class="text-muted" style="display:none">Canceling the process... Please wait.</small>
+            </div>
+        </div>
     </div>
   </div>
 
   <div id="CoverScreenTokopedia" class="LockOn" style="display:none"> 
     <div class="container p-5 my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-4 text-center">
+                <button class="btn btn-outline-secondary btn-block" id="cancel-tokopedia" type="reset" onclick="location.href='{% url 'cancel-scrape-tokopedia' %}'">Cancel</button><br>
+                <small id="cancel-text-tokopedia" class="text-muted" style="display:none">Canceling the process... Please wait.</small>
+            </div>
+        </div>
+    </div>
+  </div>
+  <!-- <div id="CoverScreenTokopedia" class="LockOn" style="display:none"> 
+    <div class="container p-5 my-5">
         <button class="btn btn-outline-secondary" id="cancel-tokopedia" type="reset" onclick="location.href='{% url 'cancel-scrape-tokopedia' %}'">Cancel</button><br><br>
         <small id="cancel-text-tokopedia" style="text-align: center; display:none">Cancel the process.. Please wait..</small>
     </div>
-  </div>
+  </div> -->
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
